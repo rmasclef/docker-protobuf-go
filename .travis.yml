@@ -1,0 +1,12 @@
+sudo: true
+dit: trusty
+
+jobs:
+  include:
+    - stage: build docker image
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t protobuf-go --build-arg SSH_PRIVATE_KEY="$TF1_REPO_SSH_KEY" .
+        - docker images
+        - docker tag protobuf-go $DOCKER_USERNAME/protobuf-go
+        - docker push $DOCKER_USERNAME/protobuf-go
