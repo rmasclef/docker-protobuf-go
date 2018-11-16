@@ -34,5 +34,3 @@ FROM alpine
 RUN apk add protobuf
 # copy generated binaries in /usr/bin
 COPY --from=builder /go/bin /usr/bin
-
-ENTRYPOINT protoc
