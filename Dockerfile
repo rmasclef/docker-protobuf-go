@@ -16,6 +16,7 @@ RUN touch /root/.ssh/known_hosts && \
 
 # Install dependencies
 RUN apk update && \
+    apk add protobuf && \
     apk add git && \
     go get -u -v github.com/golang/protobuf/protoc-gen-go && \
     go get -u -v github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway && \
@@ -30,7 +31,9 @@ RUN apk update && \
     go install -v go.etf1.tf1.fr/etf1-platform/go-grpc-server/protoc-gen-gogrpcserver
 
 FROM alpine
-# install protobuf
-RUN apk add protobuf
 # copy generated binaries in /usr/bin
 COPY --from=builder /go/bin /usr/bin
+# copy protoc binary
+COPY --from=builder /usr/bin/protoc /usr/bin
+# copy protoc lib dependancies
+COPY --from=builder /usr/lib/libproto* "/usr/lib/libstdc++*" /usr/lib/libgcc* /usr/lib/
