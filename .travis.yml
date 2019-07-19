@@ -5,8 +5,8 @@ jobs:
   include:
     - stage: build docker image
       script:
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker build -t protobuf-go --build-arg SSH_PRIVATE_KEY="$TF1_REPO_SSH_KEY" .
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin
+        - docker build -t protobuf-go .
         - docker images
-        - docker tag protobuf-go $DOCKER_USERNAME/protobuf-go
-        - docker push $DOCKER_USERNAME/protobuf-go
+        - docker tag protobuf-go $DOCKER_LOGIN/protobuf-go
+        - docker push $DOCKER_LOGIN/protobuf-go
